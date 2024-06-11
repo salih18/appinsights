@@ -3,15 +3,21 @@
   <HelloWorld msg="Welcome to Your Vue.js App"/>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import { inject, onMounted } from 'vue';
+import HelloWorld from './components/HelloWorld.vue';
+import { appInsights } from './plugins/appInsightsPlugin';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+// Inject the appInsights instance
+const appInsightsInstance = inject(appInsights);
+
+// Track page view on component mount
+onMounted(() => {
+  if (appInsightsInstance) {
+    console.log("🚀 ~ file: App.vue:21 ~ appInsightsInstance:", appInsightsInstance);
+    appInsightsInstance.trackPageView({ name: 'App Loaded' });
   }
-}
+});
 </script>
 
 <style>
